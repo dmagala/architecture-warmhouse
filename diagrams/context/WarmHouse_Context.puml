@@ -1,0 +1,15 @@
+@startuml WarmHouse Context Diagram
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+title Система "Тёплый дом" - Контекстная диаграмма (As-Is)
+
+Person(user, "Пользователь", "Управляет отоплением и смотрит температуру")
+System(system, "Монолит WarmHouse", "Go + PostgreSQL, управление и мониторинг")
+System_Ext(sensor, "Датчик температуры", "Отправляет данные о температуре")
+System_Ext(relay, "Реле отопления", "Включает/выключает отопление")
+
+Rel(user, system, "Использует веб-интерфейс", "HTTPS")
+Rel(system, sensor, "Запрашивает температуру", "HTTP (синхронно)")
+Rel(system, relay, "Управляет отоплением", "HTTP (синхронно)")
+
+@enduml
