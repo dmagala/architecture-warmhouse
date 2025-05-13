@@ -1,0 +1,64 @@
+@startuml WarmHouse ER Diagram
+
+entity User {
+  *id : uuid <<PK>>
+  --
+  *email : varchar
+  *password_hash : varchar
+  name : varchar
+  *created_at : timestamp
+}
+
+entity House {
+  *id : uuid <<PK>>
+  --
+  *user_id : uuid <<FK>>
+  *address : varchar
+  name : varchar
+  timezone : varchar
+}
+
+entity DeviceType {
+  *id : uuid <<PK>>
+  --
+  *name : varchar
+  description : text
+  protocol : varchar
+}
+
+entity Device {
+  *id : uuid <<PK>>
+  --
+  *house_id : uuid <<FK>>
+  *type_id : uuid <<FK>>
+  *name : varchar
+  serial_number : varchar
+  status : varchar
+  ip_address : varchar
+}
+
+entity Telemetry {
+  *id : uuid <<PK>>
+  --
+  *device_id : uuid <<FK>>
+  *value : decimal
+  *timestamp : timestamp
+  metric_type : varchar
+}
+
+entity DeviceCommand {
+  *id : uuid <<PK>>
+  --
+  *device_id : uuid <<FK>>
+  *command : varchar
+  status : varchar
+  executed_at : timestamp
+}
+
+User ||--o{ House : "1:N"
+House ||--o{ Device : "1:N"
+DeviceType ||--o{ Device : "1:N"
+Device ||--o{ Telemetry : "1:N"
+Device ||--o{ DeviceCommand : "1:N"
+
+@enduml
