@@ -1,0 +1,27 @@
+@startuml WarmHouse Containers Diagram
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+title Микросервисная архитектура "Тёплый дом" (Containers)
+
+Person(user, "Пользователь", "Управляет умным домом через веб/мобильное приложение")
+
+System_Boundary(system, "Экосистема WarmHouse") {
+    Container(api_gateway, "API Gateway", "Kong", "Маршрутизация запросов, аутентификация")
+    Container(device_service, "Device Service", "Go", "Управление устройствами, мониторинг")
+    Container(auth_service, "Auth Service", "Go", "Аутентификация, пользователи")
+    Container(auto_service, "Automation Service", "Python", "Обработка правил автоматизации")
+    ContainerDb(postgres, "PostgreSQL", "Хранение данных устройств")
+    ContainerDb(redis, "Redis", "Кеш сессий")
+    ContainerQueue(mq, "Message Broker", "RabbitMQ", "Асинхронные события")
+}
+
+Rel(user, api_gateway, "HTTPS")
+Rel(api_gateway, auth_service, "gRPC")
+Rel(api_gateway, device_service, "gRPC")
+Rel(device_service, postgres, "SQL")
+Rel(auth_service, redis, "Redis Protocol")
+Rel(device_service, mq, "Publish/Subscribe")
+Rel(auto_service, mq, "Consume events")
+Rel(auto_service, device_service, "gRPC (управление)")
+
+@enduml

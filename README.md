@@ -63,19 +63,27 @@
 
 # Задание 2. Проектирование микросервисной архитектуры
 
-В этом задании вам нужно предоставить только диаграммы в модели C4. Мы не просим вас отдельно описывать получившиеся микросервисы и то, как вы определили взаимодействия между компонентами To-Be системы. Если вы правильно подготовите диаграммы C4, они и так это покажут.
-
 **Диаграмма контейнеров (Containers)**
 
-Добавьте диаграмму.
+```markdown
+[Микросервисная архитектура "Тёплый дом" (Containers)](./diagrams/container/WarmHouse_Container.puml)
+```
 
 **Диаграмма компонентов (Components)**
 
-Добавьте диаграмму для каждого из выделенных микросервисов.
+```markdown
+[Device Service: Внутренние компоненты](./diagrams/component/WarmHouse_Component_Device.puml)
+
+[Auth Service: Внутренние компоненты](./diagrams/component/WarmHouse_Component_Auth.puml)
+
+[Automation Service: Внутренние компоненты](./diagrams/component/WarmHouse_Automation_Component.puml)
+```
 
 **Диаграмма кода (Code)**
 
-Добавьте одну диаграмму или несколько.
+```markdown
+[Последовательность выключения отопления](./diagrams/code/WarmHouse_Code.puml)
+```
 
 # Задание 3. Разработка ER-диаграммы
 

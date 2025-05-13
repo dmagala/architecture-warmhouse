@@ -1,0 +1,28 @@
+@startuml Device Command Sequence
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+title Последовательность выключения отопления
+
+actor User
+participant "API Gateway" as API
+participant "DeviceManager" as DeviceManager
+participant "HeatingDriver" as Driver
+participant "Relay Device" as Relay
+
+User -> API: PUT /devices/heating/off
+activate API
+API -> DeviceManager: validateUserAccess()
+activate DeviceManager
+DeviceManager -> Driver: sendCommand(OFF)
+activate Driver
+Driver -> Relay: HTTP POST /off
+activate Relay
+Relay --> Driver: 200 OK
+deactivate Relay
+Driver --> DeviceManager: CommandResult
+deactivate Driver
+DeviceManager -> API: Ack
+deactivate DeviceManager
+API --> User: 202 Accepted
+deactivate API
+@enduml

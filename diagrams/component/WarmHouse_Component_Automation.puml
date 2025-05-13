@@ -1,0 +1,16 @@
+@startuml Automation Service Components
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+title Automation Service: Внутренние компоненты
+
+Container_Boundary(auto_service, "Automation Service") {
+    Component(engine, "Rules Engine", "Исполнение сценариев")
+    Component(triggers, "Trigger Manager", "Обработка событий")
+    Component(actions, "Action Dispatcher", "Вызов команд")
+    Component(storage, "Rules Storage", "PostgreSQL")
+}
+
+Rel(triggers, engine, "События из RabbitMQ")
+Rel(engine, actions, "Команды в Device Service")
+Rel(engine, storage, "Загрузка правил")
+@enduml
