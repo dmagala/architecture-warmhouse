@@ -1,0 +1,16 @@
+@startuml Auth Service Components
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+title Auth Service: Внутренние компоненты
+
+Container_Boundary(auth_service, "Auth Service") {
+    Component(api, "Auth API", "JWT, OAuth2")
+    Component(users, "User Manager", "Профили, роли")
+    Component(sessions, "Session Cache", "Redis")
+    Component(db, "User DB", "PostgreSQL")
+}
+
+Rel(api, users, "Проверка доступа")
+Rel(users, sessions, "Кеш сессий")
+Rel(users, db, "Постоянное хранение")
+@enduml

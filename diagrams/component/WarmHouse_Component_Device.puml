@@ -1,0 +1,19 @@
+@startuml Device Service Components
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+title Device Service: Внутренние компоненты
+
+Container_Boundary(device_service, "Device Service") {
+    Component(api, "REST/gRPC API", "Внешний интерфейс")
+    Component(manager, "Device Manager", "Жизненный цикл устройств")
+    Component(drivers, "Drivers Layer", "Поддержка протоколов (HTTP/MQTT)")
+    Component(telemetry, "Telemetry Processor", "Обработка данных с датчиков")
+    Component(db_adapter, "DB Adapter", "Работа с PostgreSQL")
+}
+
+Rel(api, manager, "Команды")
+Rel(manager, drivers, "Вызов драйверов")
+Rel(drivers, telemetry, "Сырые данные")
+Rel(telemetry, db_adapter, "Нормализованные данные")
+Rel(db_adapter, manager, "Состояния устройств")
+@enduml

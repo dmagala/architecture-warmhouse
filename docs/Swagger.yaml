@@ -1,0 +1,83 @@
+openapi: 3.0.0
+info:
+  title: Device Service API
+  version: 1.0.0
+  description: Управление устройствами умного дома
+
+servers:
+  - url: https://api.warmhouse.dev/v1
+
+paths:
+  /devices/{deviceId}:
+    get:
+      tags: [Devices]
+      parameters:
+        - name: deviceId
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        200:
+          description: Устройство найдено
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Device'
+        404:
+          description: Устройство не найдено
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /devices/{deviceId}/commands:
+    post:
+      tags: [Devices]
+      parameters:
+        - name: deviceId
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CommandRequest'
+      responses:
+        202:
+          description: Команда принята
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommandResult'
+        400:
+          description: Неверный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+components:
+  schemas:
+    Device:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        name: { type: string }
+        status: { type: string, enum: [ON, OFF] }
+        type: { type: string }
+    CommandRequest:
+      type: object
+      properties:
+        command: { type: string, enum: [TURN_ON, TURN_OFF] }
+    CommandResult:
+      type: object
+      properties:
+        requestId: { type: string, format: uuid }
+        status: { type: string, enum: [PENDING, COMPLETED] }
+    Error:
+      type: object
+      properties:
+        code: { type: integer }
+        message: { type: string }
