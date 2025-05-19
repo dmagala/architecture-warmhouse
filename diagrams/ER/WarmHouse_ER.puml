@@ -12,7 +12,6 @@ entity User {
 entity House {
   *id : uuid <<PK>>
   --
-  *user_id : uuid <<FK>>
   *address : varchar
   name : varchar
   timezone : varchar
@@ -55,7 +54,7 @@ entity DeviceCommand {
   executed_at : timestamp
 }
 
-User ||--o{ House : "1:N"
+User }|--|| House : "N:M"
 House ||--o{ Device : "1:N"
 DeviceType ||--o{ Device : "1:N"
 Device ||--o{ Telemetry : "1:N"
